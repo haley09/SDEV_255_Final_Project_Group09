@@ -6,3 +6,5 @@
 | Haley Abel | HTML/CSS |
 |   Joe Douglas | Front-End/Back-End/Middleware  |
 | Heather Zarate     | Assisting with certain features   |
+
+# Description
