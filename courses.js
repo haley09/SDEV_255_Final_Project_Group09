@@ -31,4 +31,3 @@ for (const obj of courses){
     subCell.innerHTML = obj.subjectArea
     creditCell.innerHTML = obj.credits   
 };
-
