@@ -4,6 +4,7 @@ body {
 h1 {
   background-color: #D49B54;
   text-align: center;
+  font-family: serif;
 }
 h2 {
   text-align: center;
@@ -82,4 +83,14 @@ input[type=submit]:hover {
     width: 100%;
     margin-top: 0;
   }
+}
+table, th, td {
+  border: 2px solid;
+  padding: 6px;
+}
+table {
+  background-color: #171717;
+}
+th, td {
+   background-color: #D49B54;
 }
