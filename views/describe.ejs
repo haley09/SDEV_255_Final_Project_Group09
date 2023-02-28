@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+
+<%- include('./partials/head.ejs') %>
+
+<body>
+  <h1>Courses We Offer</h1>
+  <nav>
+    <ul>
+      <li>
+        <a href="/">Home</a>
+      </li>
+      <li>
+        <a href="/course">Courses</a>
+      </li>
+      <li>
+        <a href="/teacher">Teachers</a>
+      </li>
+      <li>
+        <a href="/login">Login</a>
+      </li>
+      
+    </ul>
+  </nav>
+
+  <div class="describe content">
+    <h2><%= course.name %></h2>
+    <div class="content">
+        <p><%= course.description %></p>
+        <p><%= course.subjectArea %></p>
+        <p><%= course.credits %></p>
+    </div>
+    <a class="delete" data-doc="<%= course._id %>">Delete Course</a>
+  </div>
+
+    <script>
+      const trashcan = document.querySelector('a.delete');
+
+      trashcan.addEventListener('click', (e) => {
+          const endpoint = `/courses/${trashcan.dataset.doc}`;
+
+          fetch(endpoint, {
+              method: 'DELETE'
+          })
+          .then((response) => response.json())
+          .then((data) => window.location.href = data.redirect)
+          .catch(err => console.log(err));
+      })
+  </script>
+
+</div>
+  
+</body>
+
+</html>
