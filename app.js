@@ -5,12 +5,17 @@ const Course = require("./models/course");
 
 //express app
 const app = express();
+// new for render
+const PORT = process.env.PORT || 3030;
 
 
 //connect to mongodb
 const dbURI = "mongodb+srv://group9:Group9PW@finalproject.bqrh3po.mongodb.net/Group9Final?retryWrites=true&w=majority"
 mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true })
-  .then((result) => app.listen(3000))
+  //.then((result) => app.listen(3000))
+  .then((result) => app.listen(PORT, () => {
+    console.log(`server started on port ${PORT}`)
+  }))
   .catch((err) => console.log(err));
 
 // register view engine
