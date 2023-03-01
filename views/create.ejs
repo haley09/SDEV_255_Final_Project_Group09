@@ -5,29 +5,17 @@
 
 <body>
   <h1>Courses We Offer</h1>
-  <nav>
-    <ul>
-      <li>
-        <a href="/">Home</a>
-      </li>
-      <li>
-        <a href="/course">Courses</a>
-      </li>
-      <li>
-        <a href="/teacher">Teachers</a>
-      </li>
-      <li>
-        <a href="/login">Login</a>
-      </li>
-      
-    </ul>
-  </nav>
+  <%- include('./partials/nav.ejs') %>
 
   <div style="padding-top: 30px">
     <div class="create-course content">
         <form action="/course" method="POST">
           <label for="name">Course Name:</label>
-          <input type="text" id="name" name="name" required>
+          <select id="name" name="name" required>
+              <option value="biology1">Biology I</option>
+              <option value="algebra1">Algebra I</option>
+              <option value="english1">English I</option>
+              <option value="history1">History I</option>
           <label for="description">Course Description:</label>
           <input type="text" id="description" name="description" required>
           <label for="subjectArea">Subject Area:</label>

@@ -5,23 +5,7 @@
 
 <body>
   <h1>Courses We Offer</h1>
-  <nav>
-    <ul>
-      <li>
-        <a href="/">Home</a>
-      </li>
-      <li>
-        <a href="/course">Courses</a>
-      </li>
-      <li>
-        <a href="/teacher">Teachers</a>
-      </li>
-      <li>
-        <a href="/login">Login</a>
-      </li>
-      
-    </ul>
-  </nav>
+  <%- include('./partials/nav.ejs') %>
 
   <div style="padding-top: 30px">
     <table>
@@ -43,7 +27,7 @@
           
         <% }) %>
       <% } else { %>
-          <p>There are no blogs to disply</p>
+          <p>There are no blogs to display</p>
       <% } %>
     </table>
   </div>

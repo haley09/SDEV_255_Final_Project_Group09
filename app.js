@@ -3,6 +3,9 @@ const express = require("express");
 const morgan = require('morgan');
 const Course = require("./models/course");
 
+// library for passwords
+const bcrypt = require('bcrypt');
+
 //express app
 const app = express();
 // new for render
@@ -25,10 +28,12 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.urlencoded({extended: true}));
 app.use(morgan('dev'));
+app.use(express.json());
 
 //routes
 app.get('/', (req, res) => {
   res.render('index', {title: 'Home page'});
+  res.render('login', {message: null});
 });
 
 app.get('/teacher', (req, res) => {
@@ -89,7 +94,59 @@ app.delete('/courses/:id', (req, res) => {
       })
 })
 
+//login passwords
+app.post('/login', (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
 
+  User.findOne({ username: username }, (err, user) => {
+    if (err) throw err;
+    if (!user) {
+      res.render('login', {message: 'Invalid username or password.' });
+    } else {
+      bcrypt.compare(password, user.password, (err, result) => {
+        if (err) throw err;
+        if (result) {
+          res.send('Logged in successfully.');
+        } else {
+          res.render('login', {message: 'Invalid username or password.'});
+        }
+      });
+    }
+  });
+});
+
+// register page
+
+app.get('/register', (req, res) => {
+  res.render('register', { message: null });
+});
+
+app.post('/register', (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  User.findOne({ username: username }, (err, user) => {
+    if (err) throw err;
+    if (user) {
+      res.render('register', { message: 'Username already exists.' });
+    } else {
+      bcrypt.hash(password, saltRounds, (err, hash) => {
+        if (err) throw err;
+
+        const newUser = new User({
+          username: username,
+          password: hash
+        });
+
+        newUser.save((err) => {
+          if (err) throw err;
+          res.send('User created successfully.');
+        });
+      });
+    }
+  });
+});
 
 // 404 page
 app.use((req, res) => {

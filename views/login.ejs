@@ -5,26 +5,13 @@
 
 <body>
   <h1>Login</h1>
-  <nav>
-    <ul>
-      <li>
-        <a href="/">Home</a>
-      </li>
-      <li>
-        <a href="/course">Courses</a>
-      </li>
-      <li>
-        <a href="/teacher">Teachers</a>
-      </li>
-      <li>
-        <a href="/login">Login</a>
-      </li>
-      
-    </ul>
-  </nav>
+  <%- include('./partials/nav.ejs') %>
+  <% if (message) { %>
+    <p><%= message %></p>
+  <% } %>
   <br><br><br>
   <div class="container">
-    <form action="/profile.html">
+    <form method='post'action="/login">
       <div class="row">
         <div class="col-25">
           <label for="Username">Username:</label>
@@ -43,7 +30,12 @@
       </div>
       <br>
       <div class="row">
-        <input type="submit" value="Submit">
+        <input type="submit" value="Login">
+      </div>
+      <div>
+        <a href="/register">
+          <button>Create New Login</button>
+        </a>
       </div>
     </form>
   </div>

@@ -5,23 +5,7 @@
 
 <body>
   <h1>Courses We Offer</h1>
-  <nav>
-    <ul>
-      <li>
-        <a href="/">Home</a>
-      </li>
-      <li>
-        <a href="/course">Courses</a>
-      </li>
-      <li>
-        <a href="/teacher">Teachers</a>
-      </li>
-      <li>
-        <a href="/login">Login</a>
-      </li>
-      
-    </ul>
-  </nav>
+  <%- include('./partials/nav.ejs') %>
 
   <div class="describe content">
     <h2><%= course.name %></h2>
