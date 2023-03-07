@@ -5,23 +5,9 @@
 <link rel="stylesheet" a href="/public/style.css">
 <body>
   <h1>Login</h1>
-  <nav>
-    <ul>
-      <li>
-        <a href="/index.ejs">Home</a>
-      </li>
-      <li>
-        <a href="/course.ejs">Courses</a>
-      </li>
-      <li>
-        <a href="/teacher.ejs">Teachers</a>
-      </li>
-      <li>
-        <a href="/login.ejs">Login</a>
-      </li>
-      
-    </ul>
-  </nav>
+  
+  <%- include('./partials/nav.ejs') %>
+  
   <br><br><br>
   <div class="container">
     <form action="/profile.ejs">
