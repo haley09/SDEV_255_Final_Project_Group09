@@ -11,8 +11,6 @@ body {
   h2 {
     text-align: center;
   }
-
-  /* Nav bar*/
   nav {
     background-color: #D49B54;
     text-align: center;
@@ -37,8 +35,6 @@ body {
   nav li a:hover {
     background-color: #9e2d2d;
   }
-
-  /* Form layout */
   * {
     box-sizing: border-box;
   }
@@ -54,7 +50,7 @@ body {
     display: inline-block;
     color: #D49B54;
   }
-  input[type=submit], button {
+  input[type=submit] {
     background-color: #444444;
     color: white;
     padding: 12px 20px;
@@ -63,7 +59,7 @@ body {
     cursor: pointer;
     float: right;
   }
-  input[type=submit], button:hover {
+  input[type=submit]:hover {
     background-color: #3D0000;
   }
   .container {
@@ -92,8 +88,6 @@ body {
       margin-top: 0;
     }
   }
-
-  /* Table layout*/
   table, th, td {
     border: 2px solid;
     padding: 6px;
@@ -118,7 +112,6 @@ body {
     display: block;
   }
 
-/* Form */
 form{
     max-width: 500px;
     margin: auto;
