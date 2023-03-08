@@ -2,15 +2,16 @@
 <html>
 
 <%- include('./partials/head.ejs') %>
-<link rel="stylesheet" a href="/public/style.css">
+
 <body>
-  <h1>Teacher Login</h1>
-  
+  <h1>Register</h1>
   <%- include('./partials/nav.ejs') %>
-  
+  <% if (message) { %>
+    <p><%= message %></p>
+  <% } %>
   <br><br><br>
   <div class="container">
-    <form action="/profile.ejs">
+    <form method='post'action="/register">
       <div class="row">
         <div class="col-25">
           <label for="Username">Username:</label>
@@ -24,12 +25,12 @@
           <label for="Password">Password:</label>
         </div>
         <div class="col-75">
-          <input type="text" id="Password" name="Password" placeholder="Enter Password here..">
+          <input type="password" id="Password" name="Password" placeholder="Enter Password here..">
         </div>
       </div>
       <br>
       <div class="row">
-        <input type="submit" value="Submit">
+        <input type="submit" value="Register">
       </div>
     </form>
   </div>
