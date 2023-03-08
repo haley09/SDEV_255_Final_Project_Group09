@@ -3,8 +3,12 @@ const express = require("express");
 const morgan = require('morgan');
 const Course = require("./models/course");
 
+//library for passwords
+const bcrypt = require('bcrypt');
+
 //express app
 const app = express();
+
 // new for render
 const PORT = process.env.PORT || 3030;
 
@@ -12,7 +16,7 @@ const PORT = process.env.PORT || 3030;
 //connect to mongodb
 const dbURI = "mongodb+srv://group9:Group9PW@finalproject.bqrh3po.mongodb.net/Group9Final?retryWrites=true&w=majority"
 mongoose.connect(dbURI, {useNewUrlParser: true, useUnifiedTopology: true })
-  //.then((result) => app.listen(3000))
+  //\/\/.then((result) => app.listen(3000))
   .then((result) => app.listen(PORT, () => {
     console.log(`server started on port ${PORT}`)
   }))
@@ -25,6 +29,7 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(express.urlencoded({extended: true}));
 app.use(morgan('dev'));
+app.use(express.json());
 
 //routes
 app.get('/', (req, res) => {
@@ -88,6 +93,60 @@ app.delete('/courses/:id', (req, res) => {
           console.log(err);
       })
 })
+
+//login passwords
+app.post('/login', (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  User.findOne({ username: username }, (err, user) => {
+    if (err) throw err;
+    if (!user) {
+      res.render('login', {message: 'Invalid username or password.' });
+    } else {
+      bcrypt.compare(password, user.password, (err, result) => {
+        if (err) throw err;
+        if (result) {
+          res.send('Logged in successfully.');
+        } else {
+          res.render('login', {message: 'Invalid username or password.'});
+        }
+      });
+    }
+  });
+});
+
+// register page
+
+app.get('/register', (req, res) => {
+  res.render('register', { message: null });
+});
+
+app.post('/register', (req, res) => {
+  const username = req.body.username;
+  const password = req.body.password;
+
+  User.findOne({ username: username }, (err, user) => {
+    if (err) throw err;
+    if (user) {
+      res.render('register', { message: 'Username already exists.' });
+    } else {
+      bcrypt.hash(password, saltRounds, (err, hash) => {
+        if (err) throw err;
+
+        const newUser = new User({
+          username: username,
+          password: hash
+        });
+
+        newUser.save((err) => {
+          if (err) throw err;
+          res.send('User created successfully.');
+        });
+      });
+    }
+  });
+});
 
 
 
