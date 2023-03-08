@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const express = require("express");
 const morgan = require('morgan');
 const Course = require("./models/course");
+const jwt = require('jsonwebtoken');
+const _ = require('lodash');
 
 //library for passwords
 const bcrypt = require('bcrypt');
@@ -31,6 +33,41 @@ app.use(express.urlencoded({extended: true}));
 app.use(morgan('dev'));
 app.use(express.json());
 
+//user schema
+const userSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    },
+  password: {
+    type: String,
+    required: true,
+    },
+  teachercode: {
+    type: String,
+    required: true,
+  }
+});
+
+//JWT token for the user
+userSchema.methods.generateAuthToken = function() {
+  const token = jwt.sign({ _id: this._id }, 'secret');
+  return token;
+};
+
+//Hash for the user password
+userSchema.pre('save', async function(next) {
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(this.password, salt);
+  this.password = hashedPassword;
+  next();
+});
+
+const User = mongoose.model('User', userSchema);
+
+module.exports = User;
+
 //routes
 app.get('/', (req, res) => {
   res.render('index', {title: 'Home page'});
@@ -46,6 +83,14 @@ app.get('/login', (req, res) => {
 
 app.get('/create', (req, res) => {
   res.render('create', {title: 'Create New Course'});
+});
+
+app.get('/register', (req, res) => {
+  res.render('register', { title: 'Create New Username/Password' });
+});
+
+app.get('/profile', (req, res) => {
+  res.render('profile', { title: 'Welcome' });
 });
 
 // course routes
@@ -94,58 +139,32 @@ app.delete('/courses/:id', (req, res) => {
       })
 })
 
-//login passwords
-app.post('/login', (req, res) => {
-  const username = req.body.username;
-  const password = req.body.password;
+//student login passwords
+app.post('/login', async (req, res) => {
+  let user = await User.findOne({ username: req.body.username });
+  if (!user) return res.status(400).send('Invalid username or password.');
 
-  User.findOne({ username: username }, (err, user) => {
-    if (err) throw err;
-    if (!user) {
-      res.render('login', {message: 'Invalid username or password.' });
-    } else {
-      bcrypt.compare(password, user.password, (err, result) => {
-        if (err) throw err;
-        if (result) {
-          res.send('Logged in successfully.');
-        } else {
-          res.render('login', {message: 'Invalid username or password.'});
-        }
-      });
-    }
-  });
+  const validPassword = await bcrypt.compare(req.body.password, user.password);
+  if (!validPassword) return res.status(400).send('Invalid username or password.');
+
+  const token = user.generateAuthToken();
+
+  
+  res.redirect('profile', { title: 'Welcome'});
 });
 
 // register page
 
-app.get('/register', (req, res) => {
-  res.render('register', { message: null });
-});
+app.post('/register', async (req, res) => {
+  let user = await User.findOne({ username: req.body.username });
+  if (user) return res.status(400).send('User already registered.');
 
-app.post('/register', (req, res) => {
-  const username = req.body.username;
-  const password = req.body.password;
+  user = new User(_.pick(req.body, ['username', 'password']));
+  await user.save();
 
-  User.findOne({ username: username }, (err, user) => {
-    if (err) throw err;
-    if (user) {
-      res.render('register', { message: 'Username already exists.' });
-    } else {
-      bcrypt.hash(password, saltRounds, (err, hash) => {
-        if (err) throw err;
+  const token = user.generateAuthToken();
 
-        const newUser = new User({
-          username: username,
-          password: hash
-        });
-
-        newUser.save((err) => {
-          if (err) throw err;
-          res.send('User created successfully.');
-        });
-      });
-    }
-  });
+  res.redirect('index', {title: 'Home Page'})
 });
 
 

@@ -6,31 +6,29 @@
 <body>
   <h1>Register</h1>
   <%- include('./partials/nav.ejs') %>
-  <% if (message) { %>
-    <p><%= message %></p>
-  <% } %>
+
   <br><br><br>
   <div class="container">
     <form method='post'action="/register">
       <div class="row">
         <div class="col-25">
-          <label for="Username">Username:</label>
+          <label for="username">Username:</label>
         </div>
         <div class="col-75">
-          <input type="text" id="Username" name="Username" placeholder="Enter Username here..">
+          <input type="text" id="username" name="username" placeholder="Enter Username here..">
         </div>
       </div>
       <div class="row">
         <div class="col-25">
-          <label for="Password">Password:</label>
+          <label for="password">Password:</label>
         </div>
         <div class="col-75">
-          <input type="password" id="Password" name="Password" placeholder="Enter Password here..">
+          <input type="password" id="password" name="password" placeholder="Enter Password here..">
         </div>
       </div>
       <br>
       <div class="row">
-        <input type="submit" value="Register">
+        <input type="submit" value="register">
       </div>
     </form>
   </div>
