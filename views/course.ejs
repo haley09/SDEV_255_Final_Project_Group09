@@ -2,57 +2,46 @@
 <html>
 
 <%- include('./partials/head.ejs') %>
-
+<link rel="stylesheet" a href="/public/style.css">
 <body>
-  <h1>Courses We Offer</h1>
-  <nav>
-    <ul>
-      <li>
-        <a href="/">Home</a>
-      </li>
-      <li>
-        <a href="/course">Courses</a>
-      </li>
-      <li>
-        <a href="/teacher">Teachers</a>
-      </li>
-      <li>
-        <a href="/login">Login</a>
-      </li>
-      
-    </ul>
-  </nav>
+  <main>
+    <h1>Courses We Offer</h1>
+    
+    <%- include('./partials/nav.ejs') %>
 
-  <div style="padding-top: 30px">
-    <table>
-      <tr>
-        <th>Name</th>
-        <th>Description</th>
-        <th>Subject Area</th>
-        <th>Credits</th>
-      </tr>
-      <% if (courses.length > 0) { %>
-        <% courses.forEach(course => { %>
+    <div style="padding-top: 30px">
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Subject Area</th>
+          <th>Credits</th>
+        </tr>
+        <% if (courses.length > 0) { %>
+          <% courses.forEach(course => { %>
 
-            <tr>
-              <td class="name"> <a href="/courses/<%= course._id%>"> <%= course.name %> </a></td>
-              <td class="description"><%= course.description %></td>
-              <td class="subjectArea"><%= course.subjectArea %></td>
-              <td class="credits"><%= course.credits %></td>
-            </tr>
-          
-        <% }) %>
-      <% } else { %>
-          <p>There are no blogs to disply</p>
-      <% } %>
-    </table>
-  </div>
+              <tr>
+                <td class="name"> <a href="/courses/<%= course._id%>"> <%= course.name %> </a></td>
+                <td class="description"><%= course.description %></td>
+                <td class="subjectArea"><%= course.subjectArea %></td>
+                <td class="credits"><%= course.credits %></td>
+              </tr>
+            
+          <% }) %>
+        <% } else { %>
+            <p>There are no courses to disply</p>
+        <% } %>
+      </table>
+    </div>
 
-  <div>
-    <a href="/create">
-      <button>New Course</button>
-    </a>
-  </div>
+    <div class="button-container">
+      <a href="/create">
+        <input type="submit" value="New Course">
+      </a>
+    </div>
+
+    <%- include('./partials/footer.ejs') %>
+  </main>
 </body>
 
 </html>

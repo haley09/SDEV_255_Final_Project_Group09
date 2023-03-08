@@ -2,29 +2,15 @@
 <html>
 
 <%- include('./partials/head.ejs') %>
-
+<link rel="stylesheet" a href="/public/style.css">
 <body>
   <h1>Login</h1>
-  <nav>
-    <ul>
-      <li>
-        <a href="/">Home</a>
-      </li>
-      <li>
-        <a href="/course">Courses</a>
-      </li>
-      <li>
-        <a href="/teacher">Teachers</a>
-      </li>
-      <li>
-        <a href="/login">Login</a>
-      </li>
-      
-    </ul>
-  </nav>
+  
+  <%- include('./partials/nav.ejs') %>
+  
   <br><br><br>
   <div class="container">
-    <form action="/profile.html">
+    <form action="/profile.ejs">
       <div class="row">
         <div class="col-25">
           <label for="Username">Username:</label>

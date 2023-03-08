@@ -2,31 +2,40 @@
 <html>
 
 <%- include('./partials/head.ejs') %>
-
+<link rel="stylesheet" a href="/public/style.css">
 <body>
-  <h1>Nevermore Academy</h1>
-  <nav>
-    <ul>
-      <li>
-        <a href="/">Home</a>
-      </li>
-      <li>
-        <a href="/course">Courses</a>
-      </li>
-      <li>
-        <a href="/teacher">Teachers</a>
-      </li>
-      <li>
-        <a href="/login">Login</a>
-      </li>
-    </ul>
-  </nav>
-  <p>
+  <main>
+    <h1>Nevermore Academy</h1>
 
-  </p>
-  <footer>
+    <%- include('./partials/nav.ejs') %>
 
-  </footer>
+    <div>
+      <img src="/header.jpg" style="width: 100%">
+    </div>
+
+    <div class="main-container">
+      <div class="main-heading">
+        <h2 style="margin-top: 0px">Learn More at Nevermore</h2>
+      </div>
+      <div class="main-text">
+        <h3>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo doloribus vero blanditiis neque repudiandae quam maiores quo excepturi, minus alias labore inventore, fuga eos ut hic possimus. Enim id rerum accusamus porro hic nisi adipisci!</h3>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="main-container">
+      <div class="main-text">
+        <h3>Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo doloribus vero blanditiis neque repudiandae quam maiores quo excepturi, minus alias labore inventore, fuga eos ut hic possimus. Enim id rerum accusamus porro hic nisi adipisci!</h3>
+      </div>
+      <div class="main-heading">
+        <h2 style="margin-top: 0px">Get the Most From Your Education</h2>
+      </div>
+    </div>
+
+    <%- include('./partials/footer.ejs') %>
+
+  </main>
 </body>
 
 </html>

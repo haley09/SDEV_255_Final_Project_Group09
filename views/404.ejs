@@ -2,29 +2,18 @@
 <html>
 
 <%- include('./partials/head.ejs') %>
-
+<link rel="stylesheet" a href="/public/style.css">
 <body>
-    <h1>Teachers</h1>
-    <nav>
-        <ul>
-          <li>
-            <a href="/">Home</a>
-          </li>
-          <li>
-            <a href="/course">Courses</a>
-          </li>
-          <li>
-            <a href="/teacher">Teachers</a>
-          </li>
-          <li>
-            <a href="/login">Login</a>
-          </li>
-          
-        </ul>
-      </nav>
+  <main>
+    <h1>Nevermore Academy</h1>
+    <%- include('./partials/nav.ejs') %>
 
-<div>
-  <p>404 Page Not Found :(</p>
-</div>
+    <div>
+      <h2>404 Page Not Found :(</h2>
+    </div>
+    <%- include('./partials/footer.ejs') %>
+  </main>
+
+
 </body>
 </html>

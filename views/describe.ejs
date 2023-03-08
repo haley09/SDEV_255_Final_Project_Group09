@@ -2,54 +2,45 @@
 <html>
 
 <%- include('./partials/head.ejs') %>
-
+<link rel="stylesheet" a href="/public/style.css">
 <body>
-  <h1>Courses We Offer</h1>
-  <nav>
-    <ul>
-      <li>
-        <a href="/">Home</a>
-      </li>
-      <li>
-        <a href="/course">Courses</a>
-      </li>
-      <li>
-        <a href="/teacher">Teachers</a>
-      </li>
-      <li>
-        <a href="/login">Login</a>
-      </li>
+  <main>
+    <h1>Courses We Offer</h1>
+    
       
-    </ul>
-  </nav>
+      <%- include('./partials/nav.ejs') %>
 
-  <div class="describe content">
-    <h2><%= course.name %></h2>
-    <div class="content">
-        <p><%= course.description %></p>
-        <p><%= course.subjectArea %></p>
-        <p><%= course.credits %></p>
+    <div class="describe content">
+      <h2><%= course.name %></h2>
+      <div class="content">
+          <p><%= course.description %></p>
+          <p><%= course.subjectArea %></p>
+          <p><%= course.credits %></p>
+      </div>
+      <div class="button-container">
+        <button>
+        <a class="delete" data-doc="<%= course._id %>">Delete Course</a>
+        </button>
+      </div>
     </div>
-    <a class="delete" data-doc="<%= course._id %>">Delete Course</a>
-  </div>
 
-    <script>
-      const trashcan = document.querySelector('a.delete');
+      <script>
+        const trashcan = document.querySelector('a.delete');
 
-      trashcan.addEventListener('click', (e) => {
-          const endpoint = `/courses/${trashcan.dataset.doc}`;
+        trashcan.addEventListener('click', (e) => {
+            const endpoint = `/courses/${trashcan.dataset.doc}`;
 
-          fetch(endpoint, {
-              method: 'DELETE'
-          })
-          .then((response) => response.json())
-          .then((data) => window.location.href = data.redirect)
-          .catch(err => console.log(err));
-      })
-  </script>
+            fetch(endpoint, {
+                method: 'DELETE'
+            })
+            .then((response) => response.json())
+            .then((data) => window.location.href = data.redirect)
+            .catch(err => console.log(err));
+        })
+    </script>
 
-</div>
-  
+    <%- include('./partials/footer.ejs') %>
+  </main>
 </body>
 
 </html>
