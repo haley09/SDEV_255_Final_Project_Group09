@@ -2,14 +2,29 @@
 <html>
 
 <%- include('./partials/head.ejs') %>
-<link rel="stylesheet" a href="/public/style.css">
+
 <body>
   <h1>Courses We Offer</h1>
-  
-  <%- include('./partials/nav.ejs') %>
+  <nav>
+    <ul>
+      <li>
+        <a href="/">Home</a>
+      </li>
+      <li>
+        <a href="/course">Courses</a>
+      </li>
+      <li>
+        <a href="/teacher">Teachers</a>
+      </li>
+      <li>
+        <a href="/login">Login</a>
+      </li>
+      
+    </ul>
+  </nav>
 
-  <div class="container">
-    <div class="row">
+  <div style="padding-top: 30px">
+    <div class="create-course content">
         <form action="/course" method="POST">
           <label for="name">Course Name:</label>
           <input type="text" id="name" name="name" required>
@@ -19,7 +34,7 @@
           <textarea id="subjectArea" name="subjectArea" required></textarea>
           <label for="credits">Credits:</label>
           <textarea id="credits" name="credits" required></textarea>
-          <input type="submit" value="Submit">
+          <button>Submit</button>
         </form>
       </div>
 </body>

@@ -2,12 +2,26 @@
 <html>
 
 <%- include('./partials/head.ejs') %>
-<link rel="stylesheet" a href="/public/style.css">
+
 <body>
   <h1>Courses We Offer</h1>
   <nav>
-    
-    <%- include('./partials/nav.ejs') %>
+    <ul>
+      <li>
+        <a href="/">Home</a>
+      </li>
+      <li>
+        <a href="/course">Courses</a>
+      </li>
+      <li>
+        <a href="/teacher">Teachers</a>
+      </li>
+      <li>
+        <a href="/login">Login</a>
+      </li>
+      
+    </ul>
+  </nav>
 
   <div class="describe content">
     <h2><%= course.name %></h2>
@@ -16,9 +30,7 @@
         <p><%= course.subjectArea %></p>
         <p><%= course.credits %></p>
     </div>
-    <button>
     <a class="delete" data-doc="<%= course._id %>">Delete Course</a>
-    </button>
   </div>
 
     <script>

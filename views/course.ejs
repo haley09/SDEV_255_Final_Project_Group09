@@ -2,11 +2,26 @@
 <html>
 
 <%- include('./partials/head.ejs') %>
-<link rel="stylesheet" a href="/public/style.css">
+
 <body>
   <h1>Courses We Offer</h1>
-  
-  <%- include('./partials/nav.ejs') %>
+  <nav>
+    <ul>
+      <li>
+        <a href="/">Home</a>
+      </li>
+      <li>
+        <a href="/course">Courses</a>
+      </li>
+      <li>
+        <a href="/teacher">Teachers</a>
+      </li>
+      <li>
+        <a href="/login">Login</a>
+      </li>
+      
+    </ul>
+  </nav>
 
   <div style="padding-top: 30px">
     <table>
@@ -20,7 +35,7 @@
         <% courses.forEach(course => { %>
 
             <tr>
-              <td class="name"> <a href="/course.ejs<%= course._id%>"> <%= course.name %> </a></td>
+              <td class="name"> <a href="/courses/<%= course._id%>"> <%= course.name %> </a></td>
               <td class="description"><%= course.description %></td>
               <td class="subjectArea"><%= course.subjectArea %></td>
               <td class="credits"><%= course.credits %></td>
@@ -34,8 +49,8 @@
   </div>
 
   <div>
-    <a href="/create.ejs">
-      <input type="submit" value="New Course">
+    <a href="/create">
+      <button>New Course</button>
     </a>
   </div>
 </body>
