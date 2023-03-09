@@ -4,6 +4,7 @@ const morgan = require('morgan');
 const Course = require("./models/course");
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
+const cookieParser = require('cookie-parser')
 
 //library for passwords
 const bcrypt = require('bcrypt');
@@ -32,6 +33,7 @@ app.use(express.static('public'));
 app.use(express.urlencoded({extended: true}));
 app.use(morgan('dev'));
 app.use(express.json());
+app.use(cookieParser());
 
 //user schema
 const userSchema = new mongoose.Schema({
@@ -43,18 +45,23 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
-    },
-  teachercode: {
-    type: String,
-    required: true,
+    }
   }
-});
+);
 
 //JWT token for the user
-userSchema.methods.generateAuthToken = function() {
-  const token = jwt.sign({ _id: this._id }, 'secret');
-  return token;
-};
+//userSchema.methods.generateAuthToken = function() {
+  //const token = jwt.sign({ _id: this._id }, 'secret');
+  //return token;
+//};
+
+//Create Token
+const maxAge = 3 * 24 * 60 * 60;
+const createToken = (id) => {
+  return jwt.sign({ id }, 'group 9 final', {
+      expiresIn: maxAge
+  });
+}
 
 //Hash for the user password
 userSchema.pre('save', async function(next) {
@@ -63,6 +70,7 @@ userSchema.pre('save', async function(next) {
   this.password = hashedPassword;
   next();
 });
+
 
 const User = mongoose.model('User', userSchema);
 
@@ -139,18 +147,42 @@ app.delete('/courses/:id', (req, res) => {
       })
 })
 
+  // static method to log in user TEST /\/\/\/\/\/\/\
+//userSchema.statics.login = async function (username, password) {
+  //const user = await this.findOne({ username });
+  //if (user) {
+    //const auth = await bcrypt.compare(password, user.password);
+    //if (auth){
+     // return user;
+   // }
+    //throw Error('incorrect password')
+  //}
+  //throw Error('incorrect email')
+//}
+
+///\/\/\/\/\/\/\/\/\
+
 //student login passwords
 app.post('/login', async (req, res) => {
-  let user = await User.findOne({ username: req.body.username });
-  if (!user) return res.status(400).send('Invalid username or password.');
-
-  const validPassword = await bcrypt.compare(req.body.password, user.password);
-  if (!validPassword) return res.status(400).send('Invalid username or password.');
-
-  const token = user.generateAuthToken();
-
-  
-  res.redirect('profile', { title: 'Welcome'});
+  userSchema.statics.login = async function(email, password) {
+      try{
+        const user = await User.findOne({ username: req.body.username });
+        if (user) {
+          const validPassword = await bcrypt.compare(password, user.password);
+          if (validPassword){
+            res.status(200).json({ user: user._id})
+            const token = createToken(user._id)
+            res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000});
+          }
+          throw Error('incorrect password')
+        }
+        throw Error('inocrrect username')
+      }
+      catch (err){
+        res.status(400)
+        return err
+      }
+  }
 });
 
 // register page
@@ -160,11 +192,17 @@ app.post('/register', async (req, res) => {
   if (user) return res.status(400).send('User already registered.');
 
   user = new User(_.pick(req.body, ['username', 'password']));
+
+
+  const token = createToken(user._id)
+  res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000});
+
+
   await user.save();
 
-  const token = user.generateAuthToken();
+  //const token = user.generateAuthToken();
 
-  res.redirect('index', {title: 'Home Page'})
+  res.redirect('/')
 });
 
 
