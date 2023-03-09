@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<%- include('./partials/head.ejs') %>
+
+<body>
+  <h1>Student Login</h1>
+  
+  <%- include('./partials/nav.ejs') %>
+
+  <br><br><br>
+  <div class="container">
+    <form action="/login">
+      <div class="row">
+        <div class="col-25">
+          <label for="username">Username:</label>
+        </div>
+        <div class="col-75">
+          <input type="text" id="Username" name="Username" placeholder="Enter Username here..">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-25">
+          <label for="password">Password:</label>
+        </div>
+        <div class="col-75">
+          <input type="text" id="Password" name="Password" placeholder="Enter Password here..">
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <input type="submit" value="Submit">
+      </div>
+    </form>
+  </div>
+</body>
+
+<script>
+  form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      //get the values
+      const username = form.username.value;
+      const password = form.password.value;
+
+      try{
+          const res = await fetch('/login', {
+              method:'POST',
+              body: JSON.stringify({ email, password}),
+              headers: {'Content-Type': 'application/json'}
+          });
+          const data = await res.json();
+          console.log(data);
+          if (data.errors) {
+              emailError.textContent = data.errors.email;
+              passwordError.textContent = data.errors.password;
+
+          }
+          if (data.user) {
+              location.assign('/');
+          }
+
+      }
+      catch (err) {
+          console.log(err)
+      }
+  })
+</script>
+
+
+</html>
