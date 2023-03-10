@@ -6,15 +6,24 @@
       <li>
         <a href="/course">Courses</a>
       </li>
-      <li>
-        <a href="/teacher">Teacher Login</a>
-      </li>
-      <li>
-        <a href="/login">Student Login</a>
-      </li>
-      <li>
-        <a href="/register">Register</a>
-      </li>
+      <% if (!student) { %>
+        <li>
+          <a href="/teacher">Teacher Login</a>
+        </li>
+        <li>
+          <a href="/login">Student Login</a>
+        </li>
+        <li>
+          <a href="/register">Register</a>
+        </li>
+      <% } else { %>
+        <li>
+          <a href="/schedule">Class Schedule</a>
+        </li>
+        <li>
+          <a href="/logout">Log Out</a>
+        </li>
+      <% } %>
       
     </ul>
   </nav>

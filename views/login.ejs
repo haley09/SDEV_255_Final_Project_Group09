@@ -2,37 +2,67 @@
 <html>
 
 <%- include('./partials/head.ejs') %>
-<link rel="stylesheet" a href="/public/style.css">
-<body>
-  <h1>Student Login</h1>
-  
-  <%- include('./partials/nav.ejs') %>
 
-  <br><br><br>
-  <div class="container">
-    <form action="/profile.ejs">
-      <div class="row">
-        <div class="col-25">
-          <label for="Username">Username:</label>
-        </div>
-        <div class="col-75">
-          <input type="text" id="Username" name="Username" placeholder="Enter Username here..">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-25">
-          <label for="Password">Password:</label>
-        </div>
-        <div class="col-75">
-          <input type="text" id="Password" name="Password" placeholder="Enter Password here..">
-        </div>
-      </div>
-      <br>
-      <div class="row">
-        <input type="submit" value="Submit">
-      </div>
-    </form>
-  </div>
+<body>
+  <main>
+
+    <h1>Student Login</h1>
+
+    <%- include('./partials/nav.ejs') %>
+      <form>
+
+        <h2>Student Login</h2>
+       <label for="email">Email:</label>
+       <input type="text" name="email" required />
+       <div class="email error"></div>
+
+       <label for="password">Password:</label>
+       <input type="password" name="password" required />
+       <div class="password error"></div>
+       <button>Log In</button>
+
+      </form>
+
+  </main>
 </body>
+
+<script>
+  const form = document.querySelector('form');
+  const emailError = document.querySelector('.email.error')
+  const passwordError = document.querySelector('.password.error')
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    //rest errors
+    emailError.textContent = '';
+    passwordError.textContent = '';
+
+    //get the values from the form
+    const email = form.email.value;
+    const password = form.password.value;
+
+    try {
+      const res = await fetch('/login', {
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+        headers: { 'Content-Type': 'application/json' }
+      });
+      const data = await res.json();
+      console.log(data);
+      if (data.errors) {
+        emailError.textContent = data.errors.email;
+        passwordError.textContent = data.errors.password;
+      }
+      if(data.student) {
+        location.assign('/')
+      }
+    }
+    catch (err) {
+      console.log(err);
+    }
+  })
+</script>
+
 
 </html>

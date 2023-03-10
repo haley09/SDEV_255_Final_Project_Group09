@@ -52,6 +52,8 @@ main {
   * {
     box-sizing: border-box;
   }
+
+  /* THIS SECTION OF CSS WAS BREAKING THE SITE
   input[type=text], select, textarea {
     width: 100%;
     padding: 12px;
@@ -59,6 +61,8 @@ main {
     border-radius: 4px;
     resize: vertical;
   }
+  */
+  
   label {
     padding: 12px 12px 12px 0;
     display: inline-block;

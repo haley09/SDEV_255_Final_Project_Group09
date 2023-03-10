@@ -5,6 +5,9 @@ const Course = require("./models/course");
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
 const cookieParser = require('cookie-parser')
+const { requireAuth, checkStudent } = require('./middleware/authMiddleware')
+
+const authRoutes = require('./routes/authRoutes')
 
 //library for passwords
 const bcrypt = require('bcrypt');
@@ -35,48 +38,9 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(cookieParser());
 
-//user schema
-const userSchema = new mongoose.Schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true,
-    },
-  password: {
-    type: String,
-    required: true,
-    }
-  }
-);
-
-//JWT token for the user
-//userSchema.methods.generateAuthToken = function() {
-  //const token = jwt.sign({ _id: this._id }, 'secret');
-  //return token;
-//};
-
-//Create Token
-const maxAge = 3 * 24 * 60 * 60;
-const createToken = (id) => {
-  return jwt.sign({ id }, 'group 9 final', {
-      expiresIn: maxAge
-  });
-}
-
-//Hash for the user password
-userSchema.pre('save', async function(next) {
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(this.password, salt);
-  this.password = hashedPassword;
-  next();
-});
-
-
-const User = mongoose.model('User', userSchema);
-
-module.exports = User;
-
 //routes
+app.get('*', checkStudent);
+
 app.get('/', (req, res) => {
   res.render('index', {title: 'Home page'});
 });
@@ -85,20 +49,16 @@ app.get('/teacher', (req, res) => {
   res.render('teacher', {title: 'Teacher Page'});
 });
 
-app.get('/login', (req, res) => {
-  res.render('login', {title: 'Schedule Login'});
-});
-
 app.get('/create', (req, res) => {
   res.render('create', {title: 'Create New Course'});
 });
 
-app.get('/register', (req, res) => {
-  res.render('register', { title: 'Create New Username/Password' });
-});
-
 app.get('/profile', (req, res) => {
   res.render('profile', { title: 'Welcome' });
+});
+
+app.get('/schedule', requireAuth, (req, res) => {
+  res.render('schedule', { title: 'Class Schedule' });
 });
 
 // course routes
@@ -147,64 +107,8 @@ app.delete('/courses/:id', (req, res) => {
       })
 })
 
-  // static method to log in user TEST /\/\/\/\/\/\/\
-//userSchema.statics.login = async function (username, password) {
-  //const user = await this.findOne({ username });
-  //if (user) {
-    //const auth = await bcrypt.compare(password, user.password);
-    //if (auth){
-     // return user;
-   // }
-    //throw Error('incorrect password')
-  //}
-  //throw Error('incorrect email')
-//}
-
-///\/\/\/\/\/\/\/\/\
-
-//student login passwords
-app.post('/login', async (req, res) => {
-  userSchema.statics.login = async function(email, password) {
-      try{
-        const user = await User.findOne({ username: req.body.username });
-        if (user) {
-          const validPassword = await bcrypt.compare(password, user.password);
-          if (validPassword){
-            res.status(200).json({ user: user._id})
-            const token = createToken(user._id)
-            res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000});
-          }
-          throw Error('incorrect password')
-        }
-        throw Error('inocrrect username')
-      }
-      catch (err){
-        res.status(400)
-        return err
-      }
-  }
-});
-
-// register page
-
-app.post('/register', async (req, res) => {
-  let user = await User.findOne({ username: req.body.username });
-  if (user) return res.status(400).send('User already registered.');
-
-  user = new User(_.pick(req.body, ['username', 'password']));
-
-
-  const token = createToken(user._id)
-  res.cookie('jwt', token, {httpOnly: true, maxAge: maxAge * 1000});
-
-
-  await user.save();
-
-  //const token = user.generateAuthToken();
-
-  res.redirect('/')
-});
-
+// new register/login routes
+app.use(authRoutes);
 
 
 // 404 page

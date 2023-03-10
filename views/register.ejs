@@ -4,34 +4,65 @@
 <%- include('./partials/head.ejs') %>
 
 <body>
-  <h1>Register</h1>
-  <%- include('./partials/nav.ejs') %>
+  <main>
 
-  <br><br><br>
-  <div class="container">
-    <form method='post'action="/register">
-      <div class="row">
-        <div class="col-25">
-          <label for="username">Username:</label>
-        </div>
-        <div class="col-75">
-          <input type="text" id="username" name="username" placeholder="Enter Username here..">
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-25">
-          <label for="password">Password:</label>
-        </div>
-        <div class="col-75">
-          <input type="password" id="password" name="password" placeholder="Enter Password here..">
-        </div>
-      </div>
-      <br>
-      <div class="row">
-        <input type="submit" value="register">
-      </div>
-    </form>
-  </div>
+    <h1>New User Registration</h1>
+
+    <%- include('./partials/nav.ejs') %>
+      <form>
+
+        <h2>Register As New Student</h2>
+       <label for="email">Email:</label>
+       <input type="text" name="email" required />
+       <div class="email error"></div>
+
+       <label for="password">Password:</label>
+       <input type="password" name="password" required />
+       <div class="password error"></div>
+       <button>Register</button>
+
+      </form>
+
+  </main>
 </body>
+
+<script>
+  const form = document.querySelector('form');
+  const emailError = document.querySelector('.email.error')
+  const passwordError = document.querySelector('.password.error')
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    //rest errors
+    emailError.textContent = '';
+    passwordError.textContent = '';
+
+    //get the values from the form
+    const email = form.email.value;
+    const password = form.password.value;
+
+    try {
+      const res = await fetch('/register', {
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+        headers: { 'Content-Type': 'application/json' }
+      });
+      const data = await res.json();
+      console.log(data);
+      if (data.errors) {
+        emailError.textContent = data.errors.email;
+        passwordError.textContent = data.errors.password;
+      }
+      if(data.student) {
+        location.assign('/')
+      }
+    }
+    catch (err) {
+      console.log(err);
+    }
+  })
+</script>
+
 
 </html>
