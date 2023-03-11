@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<%- include('./partials/head.ejs') %>
+<link rel="stylesheet" a href="/public/style.css">
+<body>
+  <main>
+    <h1>Courses We Offer</h1>
+    
+    <%- include('./partials/nav.ejs') %>
+
+    <div style="padding-top: 30px">
+      <table>
+        <tr>
+          <th>Name</th>
+          <th>Description</th>
+          <th>Subject Area</th>
+          <th>Credits</th>
+        </tr>
+        <% if (courses.length > 0) { %>
+          <% courses.forEach(course => { %>
+
+              <tr>
+                <td class="name"> <a href="/courses/<%= course._id%>"> <%= course.name %> </a></td>
+                <td class="description"><%= course.description %></td>
+                <td class="subjectArea"><%= course.subjectArea %></td>
+                <td class="credits"><%= course.credits %></td>
+              </tr>
+            
+          <% }) %>
+        <% } else { %>
+            <p>There are no courses to disply</p>
+        <% } %>
+      </table>
+    </div>
+
+    <div class="button-container">
+      <a href="/create">
+        <input type="submit" value="New Course">
+      </a>
+    </div>
+
+    <%- include('./partials/footer.ejs') %>
+  </main>
+</body>
+
+</html>

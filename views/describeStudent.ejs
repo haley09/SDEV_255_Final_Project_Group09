@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<%- include('./partials/head.ejs') %>
+<link rel="stylesheet" a href="/public/style.css">
+<body>
+  <main>
+    <h1>Courses We Offer</h1>
+    
+      
+      <%- include('./partials/nav.ejs') %>
+
+    <div class="describe content">
+      <h2><%= course.name %></h2>
+      <div class="content">
+          <p><%= course.description %></p>
+          <p><%= course.subjectArea %></p>
+          <p><%= course.credits %></p>
+      </div>
+      <div class="button-container">
+        <button>
+        <a class="register" data-doc="<%= course._id %>">Register</a>
+        </button>
+      </div>
+    </div>
+
+    <%- include('./partials/footer.ejs') %>
+  </main>
+</body>
+
+</html>

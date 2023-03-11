@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+
+<%- include('./partials/head.ejs') %>
+
+<body>
+  <main>
+    <h1>Nevermore Academy</h1>
+
+    <%- include('./partials/nav.ejs') %>
+
+    <h2>Are you a student or a teacher?</h2>
+
+    <div class="button-container">
+        <a href="/studentReg">
+          <input type="submit" value="Student">
+        </a>
+      </div>
+
+      <div class="button-container">
+        <a href="/teachReg">
+          <input type="submit" value="Teacher">
+        </a>
+      </div>
+
+    <%- include('./partials/footer.ejs') %>
+
+  </main>
+</body>
+
+</html>

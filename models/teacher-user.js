@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const { isEmail } = require('validator')
 const bcrypt = require('bcrypt')
 
-const studentSchema = new mongoose.Schema({
+const teacherSchema = new mongoose.Schema({
     firstName: {
       type: String,
       required: [true, 'Please enter your name']
@@ -22,31 +22,30 @@ const studentSchema = new mongoose.Schema({
       type: String,
       required: [true, 'Password required'],
       minlength: [6, 'Please enter a 6 character password']
-      },
-    schedule: []
+      }
     }
   );
 
   //fire a fuction before document is saved to db for PW hash
-  studentSchema.pre('save', async function (next) {
+  teacherSchema.pre('save', async function (next) {
     const salt = await bcrypt.genSalt();
     this.password = await bcrypt.hash(this.password, salt)
     next();
   })
 
-  //static method to log in student
-  studentSchema.statics.stuLogin = async function(email, password) {
-    const student = await this.findOne({ email });
-    if (student) {
-        const auth = await bcrypt.compare(password, student.password)
+  //static method to log in teacher
+  teacherSchema.statics.teachLogin = async function(email, password) {
+    const teacher = await this.findOne({ email });
+    if (teacher) {
+        const auth = await bcrypt.compare(password, teacher.password)
         if (auth){
-            return student;
+            return teacher;
         }
         throw Error('incorrect password');
     }
     throw Error('incorrect student email');
   }
 
-  const Student = mongoose.model('student', studentSchema)
+  const Teacher = mongoose.model('teacher', teacherSchema)
 
-  module.exports = Student; 
+  module.exports = Teacher;

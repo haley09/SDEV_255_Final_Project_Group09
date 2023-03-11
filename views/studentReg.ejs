@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<%- include('./partials/head.ejs') %>
+
+<body>
+  <main>
+
+    <h1>New User Registration</h1>
+
+    <%- include('./partials/nav.ejs') %>
+      <form>
+
+        <h2>Register As New Student</h2>
+
+       <label for="firstName">First Name:</label>
+       <input type="text" name="firstName" required />
+       <div class="firstName error"></div>
+
+       <label for="lastName">Last Name:</label>
+       <input type="text" name="lastName" required />
+       <div class="lastName error"></div>
+
+       <label for="email">Email:</label>
+       <input type="text" name="email" required />
+       <div class="email error"></div>
+
+       <label for="password">Password:</label>
+       <input type="password" name="password" required />
+       <div class="password error"></div>
+       <button>Register</button>
+
+      </form>
+
+  </main>
+</body>
+
+<script>
+  const form = document.querySelector('form');
+  const emailError = document.querySelector('.email.error');
+  const passwordError = document.querySelector('.password.error');
+  const firstNameError = document.querySelector('.firstName.error');
+  const lastNameError = document.querySelector('.lastName.error')
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    //rest errors
+    emailError.textContent = '';
+    passwordError.textContent = '';
+    firstNameError.textContent = '';
+    lastNameError.textContent = '';
+
+    //get the values from the form
+    const email = form.email.value;
+    const password = form.password.value;
+    const firstName = form.firstName.value;
+    const lastName = form.lastName.value;
+
+    try {
+      const res = await fetch('/studentReg', {
+        method: 'POST',
+        body: JSON.stringify({ firstName, lastName, email, password }),
+        headers: { 'Content-Type': 'application/json' }
+      });
+      const data = await res.json();
+      console.log(data);
+      if (data.errors) {
+        emailError.textContent = data.errors.email;
+        passwordError.textContent = data.errors.password;
+        firstNameError.textContent = data.errors.firstName;
+        lastNameError.textContent = data.errors.lastName;
+      }
+      if(data.student) {
+        location.assign('/')
+      }
+    }
+    catch (err) {
+      console.log(err);
+    }
+  })
+</script>
+
+
+</html>

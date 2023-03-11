@@ -5,7 +5,9 @@ const Course = require("./models/course");
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
 const cookieParser = require('cookie-parser')
+
 const { requireAuth, checkStudent } = require('./middleware/authMiddleware')
+const { requireAuthTeach, checkTeacher } = require('./middleware/authMiddleware')
 
 const authRoutes = require('./routes/authRoutes')
 
@@ -40,13 +42,10 @@ app.use(cookieParser());
 
 //routes
 app.get('*', checkStudent);
+app.get('*', checkTeacher);
 
 app.get('/', (req, res) => {
   res.render('index', {title: 'Home page'});
-});
-
-app.get('/teacher', (req, res) => {
-  res.render('teacher', {title: 'Teacher Page'});
 });
 
 app.get('/create', (req, res) => {
@@ -61,19 +60,23 @@ app.get('/schedule', requireAuth, (req, res) => {
   res.render('schedule', { title: 'Class Schedule' });
 });
 
-// course routes
+app.get('/registerType', (req, res) => {
+  res.render('registerType', { title: 'New User Registration' });
+});
 
- app.get('/course', (req, res) => {
+// teacher course routes
+
+ app.get('/courseTeach', (req, res) => {
   Course.find()
     .then((result) => {
-      res.render('course', { title: 'All Courses', courses: result})
+      res.render('courseTeach', { title: 'All Courses', courses: result})
     })
     .catch((err) => {
       console.log(err)
     })
 })
 
-app.post('/course', (req, res) => {
+app.post('/courseTeach', (req, res) => {
   const course = new Course(req.body)
 
   course.save()
@@ -89,7 +92,7 @@ app.get('/courses/:id', (req, res) => {
   const id = req.params.id;
   Course.findById(id)
     .then(result => {
-      res.render('describe', { course: result, title: 'Course Description'});
+      res.render('describeTeach', { course: result, title: 'Course Description'});
     })
     .catch(err => {
       console.log(err);
@@ -105,6 +108,28 @@ app.delete('/courses/:id', (req, res) => {
       .catch(err => {
           console.log(err);
       })
+})
+
+//student course routes
+app.get('/courseStudent', (req, res) => {
+  Course.find()
+    .then((result) => {
+      res.render('courseStudent', { title: 'All Courses', courses: result})
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+})
+
+app.get('/coursesStudent/:id', (req, res) => {
+  const id = req.params.id;
+  Course.findById(id)
+    .then(result => {
+      res.render('describeStudent', { course: result, title: 'Course Description'});
+    })
+    .catch(err => {
+      console.log(err);
+    })
 })
 
 // new register/login routes
