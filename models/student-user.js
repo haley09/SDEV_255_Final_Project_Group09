@@ -23,9 +23,7 @@ const studentSchema = new mongoose.Schema({
       required: [true, 'Password required'],
       minlength: [6, 'Please enter a 6 character password']
       },
-    schedule: {
-      type: Array
-    }
+    schedule: [ String ]
     }
   );
 

@@ -17,11 +17,21 @@
           <p><%= course.subjectArea %></p>
           <p><%= course.credits %></p>
       </div>
+      <div class="errorMessage"></div>
+      </div>
+
       <div class="button-container">
-        <button>
-        <a class="addCourse">Add Course</a>
+        <button id="register-button">
+        <a class="addCourse" data-doc="<%= course._id %>">Add Course</a>
         </button>
       </div>
+
+      <div class="button-container">
+        <button id="drop-button">
+        <a class="dropCourse" data-doc="<%= course._id %>">Drop Course</a>
+        </button>
+      </div>
+
     </div>
 
     <%- include('./partials/footer.ejs') %>
@@ -29,8 +39,36 @@
 </body>
 
 <script>
-    
+    const button = document.querySelector('a.addCourse');
+    const dropButton = document.querySelector('a.dropCourse')
+    const schedule = "<%= student.schedule %>"
+    const errorMessage = document.querySelector('.errorMessage');
 
+    if (schedule.includes(button.dataset.doc)){
+        errorMessage.textContent = "You are registered for this course"
+    }
+
+    button.addEventListener('click', async (e) => {
+
+      const endpoint = `/coursesStudent/${button.dataset.doc}`;
+      
+      fetch(endpoint, {
+        method: 'PUT'
+      })
+      .catch(err => console.log(err))
+    })
+
+    dropButton.addEventListener('click', async (e) => {
+
+      const endpoint = `/coursesStudent/${button.dataset.doc}`;
+
+        fetch(endpoint, {
+          method: 'DELETE'
+          })
+          .catch(err => console.log(err))
+    })
+
+    
 
 </script>
 

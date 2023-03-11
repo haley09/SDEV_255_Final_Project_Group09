@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const express = require("express");
 const morgan = require('morgan');
 const Course = require("./models/course");
+const Student = require("./models/student-user")
 const jwt = require('jsonwebtoken');
 const _ = require('lodash');
 const cookieParser = require('cookie-parser')
@@ -56,9 +57,6 @@ app.get('/profile', (req, res) => {
   res.render('profile', { title: 'Welcome' });
 });
 
-app.get('/schedule', requireAuth, (req, res) => {
-  res.render('schedule', { title: 'Class Schedule' });
-});
 
 app.get('/registerType', (req, res) => {
   res.render('registerType', { title: 'New User Registration' });
@@ -81,7 +79,7 @@ app.post('/courseTeach', (req, res) => {
 
   course.save()
     .then((result) => {
-      res.redirect('/course')
+      res.redirect('/courseTeach')
     })
     .catch((err) => {
       console.log(err)
@@ -103,7 +101,7 @@ app.delete('/courses/:id', (req, res) => {
   const id = req.params.id;
   Course.findByIdAndDelete(id)
       .then(result => {
-          res.json({ redirect: '/course' })
+          res.json({ redirect: '/courseTeach' })
       })
       .catch(err => {
           console.log(err);
@@ -131,6 +129,49 @@ app.get('/coursesStudent/:id', (req, res) => {
       console.log(err);
     })
 })
+
+app.put('/coursesStudent/:id', checkStudent, async (req,res) => {
+  const courseId = req.params.id
+  const studentId = res.locals.student.id
+
+  await Student.findOneAndUpdate({id: studentId}, {$addToSet: {schedule: courseId}})
+  .then((result) => {
+    console.log(result);
+  })
+  .catch((err) => {
+    console.log(err)
+  });
+
+})
+
+app.delete('/coursesStudent/:id', checkStudent, async (req,res) => {
+  const courseId = req.params.id
+  const studentId = res.locals.student.id
+
+  await Student.findOneAndUpdate({id: studentId}, {$pull: {schedule: courseId}})
+  .then((result) => {
+    console.log(result);
+  })
+  .catch((err) => {
+    console.log(err)
+  });
+
+}) 
+
+// student schedule
+
+app.get('/schedule', requireAuth, (req, res) => {
+  const schedule = res.locals.student.schedule
+    Course.find({_id: { $in: schedule }})
+      .then(result => {
+        console.log(result)
+      res.render('schedule', { courses: result, title: 'Student Schedule'});
+    })
+    .catch(err => {
+      console.log(err);
+    })
+});
+
 
 // new register/login routes
 app.use(authRoutes);

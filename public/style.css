@@ -118,8 +118,8 @@ main {
 
   /* Table layout*/
   table, th, td {
-    border: 2px solid;
-    padding: 6px;
+    border: 2px;
+    padding: 3px;
   }
   table {
     background-color: #171717;
@@ -181,6 +181,12 @@ form{
 
 hr{
   width: 80%;
+}
+
+/* Special Features */
+
+.errorMessage{
+  color: red;
 }
 
 /* Footer */
