@@ -9,6 +9,8 @@
     <h1>Student Login</h1>
 
     <%- include('./partials/nav.ejs') %>
+
+   
       <form>
 
         <h2>Student Login</h2>
@@ -19,10 +21,13 @@
        <label for="password">Password:</label>
        <input type="password" name="password" required />
        <div class="password error"></div>
-       <button>Log In</button>
+       <div class="button-container">
+          <button>Log In</button>
+       </div>
 
       </form>
-
+    
+      <%- include('./partials/footer.ejs') %>
   </main>
 </body>
 
