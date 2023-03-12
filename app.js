@@ -119,7 +119,7 @@ app.get('/courseStudent', (req, res) => {
     })
 })
 
-app.get('/coursesStudent/:id', (req, res) => {
+app.get('/coursesStudent/:id', requireAuth, (req, res) => {
   const id = req.params.id;
   Course.findById(id)
     .then(result => {
