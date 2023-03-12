@@ -134,9 +134,9 @@ app.put('/coursesStudent/:id', checkStudent, async (req,res) => {
   const courseId = req.params.id
   const studentId = res.locals.student.id
 
-  await Student.findOneAndUpdate({id: studentId}, {$addToSet: {schedule: courseId}})
+  await Student.findOneAndUpdate({_id: studentId}, {$addToSet: {schedule: courseId}})
   .then((result) => {
-    console.log(result);
+    res.json({ redirect: '/schedule' })
   })
   .catch((err) => {
     console.log(err)
@@ -144,17 +144,17 @@ app.put('/coursesStudent/:id', checkStudent, async (req,res) => {
 
 })
 
-app.delete('/coursesStudent/:id', checkStudent, async (req,res) => {
+app.delete('/coursesStudent/:id', checkStudent, (req,res) => {
   const courseId = req.params.id
   const studentId = res.locals.student.id
 
-  await Student.findOneAndUpdate({id: studentId}, {$pull: {schedule: courseId}})
-  .then((result) => {
-    console.log(result);
-  })
-  .catch((err) => {
-    console.log(err)
-  });
+  Student.findOneAndUpdate({_id: studentId}, {$pull: {schedule: courseId}})
+   .then((result) => {
+      res.json({ redirect: '/schedule' })
+    })
+    .catch((err) => {
+      console.log(err)
+    });
 
 }) 
 

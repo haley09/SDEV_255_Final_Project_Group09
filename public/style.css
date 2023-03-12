@@ -48,6 +48,10 @@ main {
     background-color: #9e2d2d;
   }
 
+  a {
+    color: black;
+  }
+
   /* Form layout */
 
   form{
@@ -67,8 +71,8 @@ main {
   label {
     padding: 12px 12px 12px 0;
     display: inline-block;
-    color: #D49B54;
-    width: 100px;
+    color: black;
+    width: 120px;
     text-align: left;
   }
   input[type=submit], button {
@@ -118,28 +122,46 @@ main {
 
   /* Table layout*/
   table, th, td {
-    border: 2px;
+    
     padding: 3px;
   }
   table {
-    background-color: #171717;
     text-align: center;
     margin-left: auto;
     margin-right: auto;
+    border-collapse: collapse;
+    background-color: #D49B54
   }
-  th, td {
-     background-color: #D49B54;
+
+  td {
+    padding: 30px;
+    border: 2px solid;
+    position: relative;
   }
+  
   th {
     font-size: 20px;
     padding: 20px;
+    border: 2px solid;
   }
-  td {
-    padding: 30px;
+
+  .top-row:hover {
+    background-color: #D49B54 !important;
   }
+
+  tr:hover, tr:focus-within {
+    background-color: #FFF2CE;
+    outline: none;
+  }
+  
   td a {
     display: block;
+    text-decoration: none;
   }
+  td a:visited {
+    color: black;
+  }
+
 
 /* Form */
 form{
@@ -187,6 +209,7 @@ hr{
 
 .errorMessage{
   color: red;
+  text-align: center;
 }
 
 /* Footer */
@@ -194,6 +217,8 @@ footer{
   text-align: center;
   background-color: #D49B54;
   margin-top: 15px;
+  padding-top: 3px;
+  padding-bottom: 3px;
 }
 
 

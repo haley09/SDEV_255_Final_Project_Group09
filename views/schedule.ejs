@@ -11,26 +11,31 @@
 
         <h2>Schedule for <%= student.firstName %> </h2> 
 
-        <table>
-          <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Subject Area</th>
-            <th>Credits</th>
-          </tr>
+        
           <% if (courses.length > 0) { %>
+
+            <table>
+              <tr class="top-row">
+                <th>Name</th>
+                <th>Description</th>
+                <th>Subject Area</th>
+                <th>Credits</th>
+              </tr>
+              
             <% courses.forEach(course => { %>
+
+              
   
                 <tr>
                   <td class="name"> <a href="/coursesStudent/<%= course._id%>"> <%= course.name %> </a></td>
-                  <td class="description"><%= course.description %></td>
-                  <td class="subjectArea"><%= course.subjectArea %></td>
-                  <td class="credits"><%= course.credits %></td>
+                  <td class="description"><a href="/coursesStudent/<%= course._id%>"><%= course.description %></a></td>
+                  <td class="subjectArea"><a href="/coursesStudent/<%= course._id%>"><%= course.subjectArea %></a></td>
+                  <td class="credits"><a href="/coursesStudent/<%= course._id%>"><%= course.credits %></a></td>
                 </tr>
               
             <% }) %>
           <% } else { %>
-              <p>You are not registered for any courses</p>
+              <p class="errorMessage">You are not registered for any courses</p>
           <% } %>
         </table>
 
